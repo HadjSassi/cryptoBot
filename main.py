@@ -1,44 +1,38 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
+import plotly.express as px
 
+#read from database
 workbook = pd.read_excel('a.xlsx')
+
+#Convert time column to a date column
 workbook["time"] = pd.to_datetime(workbook['time'])
+
+#prepare the columns
 time = workbook['time']
 value = workbook['coeff mult.5']
-
-fig, ax = plt.subplots(figsize=(10, 5))
-ax.plot(time, value);
-font1 = {'family':'serif','color':'green','size':20}
-font2 = {'family':'serif','color':'darkred','size':15}
-ax.set_title("First figure : Visualisation BotMax1", fontdict = font1)
-ax.set_xlabel("Date", fontdict = font2)
-ax.set_ylabel("Coeff mult", fontdict = font2)
-
-
-
 value1 = workbook['coeff mult']
 value2 = workbook['coeff mult.1']
 value3 = workbook['coeff mult.2']
 value4 = workbook['coeff mult.3']
 value5 = workbook['coeff mult.4']
-value6 = workbook['coeff mult.5']
 
-fig1, fig0 = plt.subplots(figsize=(10, 5))
+#create the first dataframe
+df1 = pd.concat([time,value], axis=1)
+df1.rename(columns={'coeff mult.5':'Bot Max'},inplace=True)
 
-fig0.plot(time, value1,label='eth')
-fig0.plot(time, value2,label='dot')
-fig0.plot(time, value3,label='dodge')
-fig0.plot(time, value4,label='ada')
-fig0.plot(time, value5,label='bnb')
-font1 = {'family':'serif','color':'red','size':20}
-font2 = {'family':'serif','color':'darkred','size':15}
-fig0.set_title("First figure : Visualisation", fontdict = font1)
-fig0.set_xlabel("Date", fontdict = font2)
-fig0.set_ylabel("Coeff mult", fontdict = font2)
-fig0.legend()
+#prepare the plot of the first dataframe
+fig = px.line(df1, x="time", y=df1.columns,
+              title='custom tick labels')
 
+#create the second  dataframe
+df2 = pd.concat([time,value1,value2,value3,value4,value5],axis=1)
+df2.rename(columns={'coeff mult':'ETH','coeff mult.1':'DOT','coeff mult.2':'DODGE','coeff mult.3':'ADA','coeff mult.4':'BNB'},inplace=True)
 
-st.pyplot(fig1)
-st.pyplot(fig)
+#prepare the plot of the second dataframe
+fig2 = px.line(df2, x="time", y=df2.columns,
+              title='custom tick labels')
+
+#showing the two plots
+st.plotly_chart(fig)
+st.plotly_chart(fig2)
