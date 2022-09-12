@@ -5,7 +5,7 @@ import streamlit as st
 
 #Connect with database
 #Please verify the informations below to avoid exceptions
-cnx = mysql.connector.connect(host='localhost',user='root',password='system',port='3306',database='cryptos',auth_plugin='mysql_native_password')
+cnx = mysql.connector.connect(host='localhost',user='root',password='Magali_1984',port='3306',database='cryptos',auth_plugin='mysql_native_password')
 
 #fetch all balences in the table get_balence
 cursor = cnx.cursor()
