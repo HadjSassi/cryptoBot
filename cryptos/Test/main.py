@@ -11,7 +11,7 @@ def main():
               use_column_width=False)
     st.title("Cocobots")
     authenticator = auth.auth_data()
-    con = ConnectBbd( 'localhost', '3306', 'root', 'system','cryptos', 'mysql_native_password')
+    con = ConnectBbd( 'localhost', '3306', 'root', 'Magali_1984','cryptos', 'mysql_native_password')
     password = None
     name, authentication_status, username = authenticator.login('Login', 'main')
     if authentication_status:
