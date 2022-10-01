@@ -18,7 +18,7 @@ class ConnectBbd:
 
     def insert_new_user(self, user_name, email, password):
         cursor = self.cnx.cursor()
-        query = """INSERT INTO users (user_name, email, password) VALUES ('%s', '%s', '%s')""" % (
+        query = """INSERT INTO users (username, email, password) VALUES ('%s', '%s', '%s')""" % (
         user_name, email, password)
         cursor.execute(query)
         self.cnx.commit()
@@ -27,11 +27,20 @@ class ConnectBbd:
 
     def delete_user(self, user_name):
         cursor = self.cnx.cursor()
-        query = """ DELETE FROM users WHERE user_name = ('%s')""" % (user_name)
+        query = """ DELETE FROM users WHERE username = ('%s')""" % (user_name)
         cursor.execute(query)
         self.cnx.commit()
         cursor.close()
         self.cnx.close()
+
+    def delete_bot(self, bot_id):
+        with self.cnx.cursor() as cursor:
+            query = """ DELETE FROM bots WHERE bot_id = ('%s')""" % (bot_id)
+            cursor.execute(query)
+            self.cnx.commit()
+            cursor.close()
+            self.cnx.close()
+
 
     def insert_new_trix_bot(self, selection_bot, bot_name, user_mail,
                              api_key, secret_key, sub_account, pair_symbol,
@@ -69,3 +78,12 @@ class ConnectBbd:
         result = cursor.fetchall()
         self.cnx.close()
         return result
+
+    def get_bots(self):
+        cursor = self.cnx.cursor()
+        query = " SELECT bot_id, nom_bot  FROM bots ;"
+        cursor.execute(query)
+        result = cursor.fetchall()
+        self.cnx.close()
+        return result
+
